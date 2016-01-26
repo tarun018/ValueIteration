@@ -5,7 +5,7 @@
 import java.util.*;
 public class MDP {
 	int n,m;
-	double gamma = 1.0;
+	double gamma = 0.8;
 	State[][] grid;
 	Vector<Action> actions;
 	int numofActions;
@@ -33,7 +33,7 @@ public class MDP {
 				grid[i][j] = new State(0.0, null, false, actions, i, j);
 			}
 		}
-		setTerminatingState(grid[1][1], -1);
+		setTerminatingState(grid[1][1], -10);
 		setTerminatingState(grid[0][2], 1);
 		grid[1][2].setWall(true); //Wall
 	}
@@ -147,8 +147,8 @@ public class MDP {
 			}
 		}
 		while(true) {
-			System.out.println(++it);
-			double delta = 0, epsilon = 0.1;
+			System.out.println("Iteration #" + ++it);
+			double delta = 0, epsilon = 0.001;
 			for(int i = 0; i < n; i++) {
 				for(int j = 0; j < m; j++) {
 					grid[i][j].setUtility(dummy[i][j].utility);
@@ -183,7 +183,7 @@ public class MDP {
 					}
 				}
 			}
-			System.out.println("Delta: " + delta);
+			//System.out.println("Delta: " + delta);
 			if (delta <= ( epsilon*((double)(1 - gamma) / (gamma))) ) {
 				break;
 			}
