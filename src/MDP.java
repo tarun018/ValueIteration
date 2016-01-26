@@ -5,7 +5,7 @@
 import java.util.*;
 public class MDP {
 	int n,m;
-	double gamma = 0.8;
+	float gamma = (float) 1.0;
 	State[][] grid;
 	Vector<Action> actions;
 	int numofActions;
@@ -30,15 +30,15 @@ public class MDP {
 	public void generateStates() {
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < m; j++) {
-				grid[i][j] = new State(0.0, null, false, actions, i, j);
+				grid[i][j] = new State((float) 0.0, null, false, actions, i, j);
 			}
 		}
-		setTerminatingState(grid[1][1], -10);
-		setTerminatingState(grid[0][2], 1);
-		grid[1][2].setWall(true); //Wall
+		setTerminatingState(grid[0][1], 14);
+		setTerminatingState(grid[1][0], -14);
+		grid[3][2].setWall(true); //Wall
 	}
 	
-	public void setTerminatingState(State s, double utility) {
+	public void setTerminatingState(State s, float utility) {
 		grid[s.row][s.column].setTerminating(true);
 		grid[s.row][s.column].setUtility(utility);
 		grid[s.row][s.column].setPossibleActions(null);
@@ -78,16 +78,16 @@ public class MDP {
 
 	public class Pair {
 		public State s;
-		public double val;
+		public float val;
 		
-		public Pair(State s, double val) {
+		public Pair(State s, float val) {
 			this.s = s;
 			this.val = val;
 		}
 	}
 
 	public Vector<Pair> performAction(State s, Action a) {
-		double intended = 0.8, alternative = 0.1;
+		float intended = (float) 0.8, alternative = (float) 0.1;
 		Vector<Pair> possibleStates = new Vector<Pair>();
 		if (a.equals(UP)) {
 			possibleStates.add(new Pair(performUp(s), intended));
@@ -109,30 +109,30 @@ public class MDP {
 		return possibleStates;
 	}
 
-	public double getTransitions(State s, Action a, State s1) {
+	public float getTransitions(State s, Action a, State s1) {
 		Vector<Pair> possible = performAction(s, a);
 		for ( Pair sa : possible ) {
 			if (sa.s.equals(s1)) {
 				return sa.val;
 			}
 		}
-		return 0.0;
+		return (float) 0.0;
 		
 	}
 
-	public double getReward(State s, Action a) {
+	public float getReward(State s, Action a) {
 		if (s.isTerminating()) {
-			return s.getUtility();
+			return (float) s.getUtility();
 		} else {
-			return -0.04;
+			return (float) -0.7;
 		}
 	}
 
 	public class ActionUtilityPair {
-		public double utility;
+		public float utility;
 		public Action best;
 		
-		public ActionUtilityPair(double val, Action a) {
+		public ActionUtilityPair(float val, Action a) {
 			this.utility = val;
 			this.best = a;
 		}
@@ -147,36 +147,42 @@ public class MDP {
 			}
 		}
 		while(true) {
-			System.out.println("Iteration #" + ++it);
-			double delta = 0, epsilon = 0.001;
+			System.out.println("------------Iteration--------- #" + ++it);
+			float delta = 0, epsilon = (float) 0.1;
 			for(int i = 0; i < n; i++) {
 				for(int j = 0; j < m; j++) {
 					grid[i][j].setUtility(dummy[i][j].utility);
 					grid[i][j].setAction(dummy[i][j].best);
+					System.out.println(grid[i][j]);
 				}
 			}
 			for(int i = 0; i < n; i++) {
 				for(int j = 0; j < m; j++) {
-					double maxUtility = -2;
+					System.out.println("Row: " + i + " Column: " + j);
+					float maxUtility = -2;
 					Action best = null;
 					if(!grid[i][j].isTerminating && !grid[i][j].isWall) {
 						Vector<Action> possibleActions = grid[i][j].getPossibleActions();
 						for(Action a : possibleActions) {
-							double util = 0.0;
+							System.out.println("Action Selected: " + a);
+							float util = (float) 0.0;
 							Vector<Pair> possibleStates = performAction(grid[i][j], a);
 							for ( Pair sa : possibleStates ) {
+								System.out.println("State: " + sa.s.row + " " + sa.s.column + "Utility: " + sa.s.getUtility() + "Probability: " + sa.val);
 								util = util + (sa.s.getUtility() * sa.val);
 							}
 							util = util * gamma;
 							util = util + this.getReward(grid[i][j], a);
+							System.out.println("Utility: " + util);
 							if(util > maxUtility) {
 								maxUtility = util;
 								best = a;
 							}
 						}
+						System.out.println("MAXXX : Action: " + best + "  " + "Utility: " + maxUtility);
 						dummy[i][j].utility = maxUtility;
 						dummy[i][j].best = best;
-						//System.out.println("Limit Value: " + ( epsilon*((double)(1 - gamma) / (gamma))));
+						//System.out.println("Limit Value: " + ( epsilon*((float)(1 - gamma) / (gamma))));
 						if (Math.abs(dummy[i][j].utility - grid[i][j].getUtility()) > delta) {
 							delta = Math.abs(dummy[i][j].utility - grid[i][j].getUtility());
 						}
@@ -184,7 +190,8 @@ public class MDP {
 				}
 			}
 			//System.out.println("Delta: " + delta);
-			if (delta <= ( epsilon*((double)(1 - gamma) / (gamma))) ) {
+			if (delta <= ( epsilon*((float)(1 - gamma) / (gamma))) ) {
+			//if (it==149721) {
 				break;
 			}
 		}

@@ -4,7 +4,7 @@
  */
 import java.util.Vector;
 public class State {
-	double utility;
+	float utility;
 	Action bestAction;
 	boolean isTerminating;
 	boolean isWall;
@@ -25,7 +25,7 @@ public class State {
 		this.column = s.column;
 	}
 
-	public State(double utility, Action action,
+	public State(float utility, Action action,
 			boolean isTerminating, Vector<Action> possibleActions, int row,
 			int column) {
 		this.utility = utility;
@@ -36,10 +36,10 @@ public class State {
 		this.column = column;
 	}
 
-	public double getUtility() {
+	public float getUtility() {
 		return utility;
 	}
-	public void setUtility(double utility) {
+	public void setUtility(float utility) {
 		this.utility = utility;
 	}
 	public Action getAction() {
