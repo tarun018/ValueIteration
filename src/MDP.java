@@ -33,9 +33,9 @@ public class MDP {
 				grid[i][j] = new State((float) 0.0, null, false, actions, i, j);
 			}
 		}
-		setTerminatingState(grid[0][1], 14);
-		setTerminatingState(grid[1][0], -14);
-		grid[3][2].setWall(true); //Wall
+		setTerminatingState(grid[0][3], 1);
+		setTerminatingState(grid[1][3], -1);
+		grid[1][1].setWall(true); //Wall
 	}
 	
 	public void setTerminatingState(State s, float utility) {
@@ -49,7 +49,10 @@ public class MDP {
 		nextRow = s.row - 1;
 		if(nextRow < 0)
 			nextRow = 0;
-		return grid[nextRow][nextCol];
+		if (grid[nextRow][nextCol].isWall())
+			return s;
+		else
+			return grid[nextRow][nextCol];
 	}
 
 	public State performDown(State s) {
@@ -57,7 +60,10 @@ public class MDP {
 		nextRow = s.row + 1;
 		if(nextRow > n-1)
 			nextRow = n-1;
-		return grid[nextRow][nextCol];
+		if (grid[nextRow][nextCol].isWall())
+			return s;
+		else
+			return grid[nextRow][nextCol];
 	}
 
 	public State performLeft(State s) {
@@ -65,7 +71,10 @@ public class MDP {
 		nextCol = s.column - 1;
 		if(nextCol < 0)
 			nextCol = 0;
-		return grid[nextRow][nextCol];
+		if (grid[nextRow][nextCol].isWall())
+			return s;
+		else
+			return grid[nextRow][nextCol];
 	}
 
 	public State performRight(State s) {
@@ -73,7 +82,10 @@ public class MDP {
 		nextCol = s.column + 1;
 		if(nextCol > m-1)
 			nextCol = m-1;
-		return grid[nextRow][nextCol];
+		if (grid[nextRow][nextCol].isWall())
+			return s;
+		else
+			return grid[nextRow][nextCol];
 	}
 
 	public class Pair {
@@ -124,7 +136,7 @@ public class MDP {
 		if (s.isTerminating()) {
 			return (float) s.getUtility();
 		} else {
-			return (float) -0.7;
+			return (float) -0.04;
 		}
 	}
 
@@ -190,7 +202,7 @@ public class MDP {
 				}
 			}
 			//System.out.println("Delta: " + delta);
-			if (delta <= ( epsilon*((float)(1 - gamma) / (gamma))) ) {
+			if (delta <= ( epsilon*((float)(1.0001 - gamma) / (gamma))) ) {
 			//if (it==149721) {
 				break;
 			}

@@ -26,6 +26,7 @@ public class Action {
 			throw new IllegalArgumentException("String " + a + "is not a possible action");
 	}
 
+	@Override
 	public boolean equals(Object a) {
 		if ((a != null) && (a instanceof Action)) {
 			Action b = (Action)a;
@@ -38,6 +39,7 @@ public class Action {
 			return false;
 	}
 
+	@Override
 	public String toString() {
 		switch(this.action) {
 		case 0: return "ACTION UP";
