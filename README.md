@@ -11,6 +11,11 @@ Steps for running the program:
 
 If you want to get the output in a file, run as 'java Driver > output.txt', where output.txt is the output filename.
 
+User can change the terminating and walled states here: https://github.com/tarun018/ValueIteration/blob/master/src/MDP.java#L52
+
+User can change the R(s,a) values here:
+https://github.com/tarun018/ValueIteration/blob/master/src/MDP.java#L209
+
 Output Details:
 
 State [utility=0.0, bestAction=null, isTerminating=false, isWall=false, possibleActions=[ACTION UP, ACTION DOWN, ACTION LEFT, ACTION RIGHT], row=0, column=0]
