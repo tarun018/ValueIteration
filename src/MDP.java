@@ -5,7 +5,7 @@
 import java.util.*;
 public class MDP {
 	int n,m; //n corresponds to number of rows in MDP GridWorld and m corresponds to number of columns in MDP GridWorld.
-	float gamma; //Gamma value to be used for discounting.
+	float gamma = (float) 1.0; //Gamma value to be used for discounting.
 	State[][] grid;
 	Vector<Action> actions;
 	int numofActions; //Total number of actions available. Corresponds to the number of actions available in Action class. 
@@ -284,7 +284,7 @@ public class MDP {
 
 							//For a given state, and an action selected, get the expected value of utility of this state by iterating over all possible states due to non-determinsitic actions.
 							for ( Pair sa : possibleStates ) {
-								System.out.println("State: " + sa.s.row + " " + sa.s.column + "Utility: " + sa.s.getUtility() + "Probability: " + sa.val);
+								System.out.println(" Possible State: " + sa.s.row + " " + sa.s.column + " Utility: " + sa.s.getUtility() + " Probability of Transition: " + sa.val);
 								util = util + (sa.s.getUtility() * sa.val);
 							}
 	
@@ -299,7 +299,7 @@ public class MDP {
 						}
 						
 						//Prints best action, and max utility at current iteration.
-						System.out.println("MAX : Action: " + best + "  " + "Utility: " + maxUtility);
+						System.out.println("MAX : Action: " + best + "  " + " Utility: " + maxUtility);
 						dummy[i][j].utility = maxUtility; //Updates dummy values to accomodate the current values.
 						dummy[i][j].best = best;
 						
