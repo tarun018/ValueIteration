@@ -1,6 +1,7 @@
 /**
  * @author tarun
- * 
+ * Class denoting the actions possible in the MDP GridWorld.
+ * Presently, Actions UP, DOWN, LEFT, RIGHT are supported.
  */
 public class Action {
 	int action;
@@ -9,10 +10,19 @@ public class Action {
 	public final static int LEFT = 2;
 	public final static int RIGHT = 3;
 	
+	/**
+	 * Constructor of Action class from a Integer.
+	 * @param a
+	 */
 	public Action(int a) {
 		this.action = a;
 	}
 	
+	/**
+	 * Constructor of Action class from a String.
+	 * @param a
+	 * @throws IllegalArgumentException, if string is not recognized.
+	 */
 	public Action(String a) {
 		if (a.equals("UP"))
 			this.action = 0;
@@ -27,6 +37,9 @@ public class Action {
 	}
 
 	@Override
+	/**
+	 * Checks whether two actions are equal or not.
+	 */
 	public boolean equals(Object a) {
 		if ((a != null) && (a instanceof Action)) {
 			Action b = (Action)a;
