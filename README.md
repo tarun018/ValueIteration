@@ -2,14 +2,12 @@
 
 # Value Iteration
 
-This is a Value Iteration program for a n X m grid world. User have to provide the n (number of rows), m (number of columns), and the discount factor (default value is 1).
+This is a Value Iteration program for a n X m grid world. User have to provide the n (number of rows), m (number of columns), and the discount factor (default value is 1) via command line arguments.
 Steps for running the program:
 
   - Complile using 'javac Driver.java'
   - Run Driver using 'java Driver (number of rows) (number of columns) (discount factor) '
   - Run example: 'java Driver 3 4 1'
-  - Input n and m values, separated by a space.
-  - Input the discount factor value.
 
 If you want to get the output in a file, run as 'java Driver > output.txt', where output.txt is the output filename.
 
