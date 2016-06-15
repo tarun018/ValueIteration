@@ -186,12 +186,13 @@ public class MDP {
 	 */
 	public float getTransitions(State s, Action a, State s1) {
 		Vector<Pair> possible = performAction(s, a);
+		float sum = (float)0;
 		for ( Pair sa : possible ) {
 			if (sa.s.equals(s1)) {
-				return sa.val;
+				sum += sa.val;
 			}
 		}
-		return (float) 0.0;
+		return (float) sum;
 		
 	}
 
@@ -230,6 +231,23 @@ public class MDP {
 	 * @param epsilon, the maximum error allowed in the utility of any state.
 	 */
 	public void valueIteration(float epsilon) {
+						System.out.println();
+
+			// for(Action a : this.actions) {
+			// 	System.out.println(a);
+			// 	for(int i = 0; i < n; i++) {
+			// 		for(int j = 0; j < m; j++) {
+			// 			for(int k = 0; k < n; k++) {
+			// 				for(int l = 0; l < m; l++) {
+			// 					System.out.print(getTransitions(grid[i][j], a, grid[k][l]) + ",");
+			// 				}
+			// 			}
+			// 			System.out.println();
+			// 		}
+			// 	}
+			// 	System.out.println();
+			// }
+
 		int it=0; //Number of iteration, initially 0.
 		
 		/**
@@ -246,7 +264,7 @@ public class MDP {
 		 * Value Iteration begins.
 		 */
 		while(true) {
-			System.out.println("------------Iteration--------- # " + ++it);
+			//System.out.println("------------Iteration--------- # " + ++it);
 			float delta = 0; //Initialize delta (the maximum change in the utility of any state in an iteration) to zero.
 
 			/**
@@ -257,7 +275,7 @@ public class MDP {
 				for(int j = 0; j < m; j++) {
 					grid[i][j].setUtility(dummy[i][j].utility);
 					grid[i][j].setAction(dummy[i][j].best);
-					System.out.println(grid[i][j]);
+					//System.out.println(grid[i][j]);
 				}
 			}
 			
@@ -268,7 +286,7 @@ public class MDP {
 			 */
 			for(int i = 0; i < n; i++) {
 				for(int j = 0; j < m; j++) {
-					System.out.println("Row: " + i + " Column: " + j);
+					//System.out.println("Row: " + i + " Column: " + j);
 					float maxUtility = -2;
 					Action best = null;
 					if(!grid[i][j].isTerminating && !grid[i][j].isWall) {
@@ -278,7 +296,7 @@ public class MDP {
 						
 						//Returns the maximum possible utility after trying out all possible actions, and the corresponding action.
 						for(Action a : possibleActions) {
-							System.out.println("Action Selected: " + a);
+							//System.out.println("Action Selected: " + a);
 							float util = (float) 0.0;
 							Vector<Pair> possibleStates = performAction(grid[i][j], a);
 
@@ -290,7 +308,7 @@ public class MDP {
 	
 							util = util * gamma;
 							util = util + this.getReward(grid[i][j], a);
-							System.out.println("Utility: " + util);
+							//System.out.println("Utility: " + util);
 							
 							if(util > maxUtility) {
 								maxUtility = util;
@@ -299,7 +317,7 @@ public class MDP {
 						}
 						
 						//Prints best action, and max utility at current iteration.
-						System.out.println("MAX : Action: " + best + "  " + " Utility: " + maxUtility);
+						//System.out.println("MAX : Action: " + best + "  " + " Utility: " + maxUtility);
 						dummy[i][j].utility = maxUtility; //Updates dummy values to accomodate the current values.
 						dummy[i][j].best = best;
 						
