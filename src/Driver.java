@@ -1,5 +1,5 @@
 //AnotherHello
-//Hello Ano
+//Hello Another
 import java.util.Scanner;
 
 /**
